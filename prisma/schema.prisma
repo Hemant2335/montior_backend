@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  username String   @unique
+  name     String
+  password String
+  profile  String   @default("https://res.cloudinary.com/dri5u2nqb/image/upload/v1713511395/zrtp9p7eote4ixokmwjx.jpg")
+  base32_secret String @default("")
+  is_verified Boolean @default(false)
+  UserSession UserSession[]
+  }
+
+
+model UserSession {
+  id         String @id @default(cuid())
+  user       User   @relation(fields: [userId], references: [id])
+  userId     String
+  deviceName String
+  isActive   Boolean @default(true)
+  timestamp  DateTime @default(now())
+}
+
