@@ -196,6 +196,7 @@ function generateQRCodeURL(secret:any) {
 // Endpoint to verify the token
 router.post('/verify-2fa',async(req, res) => {
   const { token , email} = req.body;
+  console.log(token , email);
   const newuser = await prisma.user.findFirst({
     where : {
       email : email
