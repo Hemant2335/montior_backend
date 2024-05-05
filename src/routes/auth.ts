@@ -30,6 +30,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "secret");
     if(!user.is_verified){
       res.cookie("token", token ,{
+        secure: true,
         sameSite: 'none'
       });
       const session = await prisma.userSession.create({
@@ -40,6 +41,7 @@ router.post("/login", async (req, res) => {
         }
       })
       res.cookie("DeviceId", session.id,{
+        secure: true,
         sameSite: 'none'
       });
     }
@@ -136,6 +138,7 @@ router.post("/register", async (req, res) => {
       process.env.JWT_SECRET || "secret"
     );
     res.cookie("token", token,{
+      secure: true,
       sameSite: 'none'
     });
     res.json({ Status: true, token: token });
@@ -232,6 +235,7 @@ router.post('/verify-2fa',async(req, res) => {
       }
       const token = jwt.sign({ id: newuser?.id }, process.env.JWT_SECRET || "secret");
       res.cookie("token", token,{
+        secure: true,
         sameSite: 'none'
       });
       const session = await prisma.userSession.create({
@@ -242,6 +246,7 @@ router.post('/verify-2fa',async(req, res) => {
         }
       })
       res.cookie("DeviceId", session.id,{
+        secure: true,
         sameSite: 'none'
       });
       console.log("New Session Created" , session);
