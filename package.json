@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc -b && nodemon src/index.ts",
-    "build": "npx prisma generate --schema=./prisma/schema.prisma && rimraf dist && tsc -b .",
+    "build": "npm i && npx prisma generate --schema=./prisma/schema.prisma && rimraf dist && tsc -b .",
     "ts.check": "tsc --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "npx prisma generate --schema=./prisma/schema.prisma"
