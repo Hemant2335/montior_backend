@@ -220,15 +220,7 @@ router.post('/verify-2fa',async(req, res) => {
         })
       }
       const token = jwt.sign({ id: newuser?.id }, process.env.JWT_SECRET || "secret");
-      const session = await prisma.userSession.create({
-        data : {
-          userId : newuser?.id as string,
-          isActive : true,
-          deviceName : "Mobile"
-        }
-      })
-      console.log("New Session Created" , session);
-      res.json({ Status: true, DeviceId : session.id ,token: token , is_verified : newuser?.is_verified});
+      res.json({ Status: true ,token: token , is_verified : newuser?.is_verified});
   } else {
     console.log("Invalid Token");
     res.json({ Status: false, is_verified : newuser?.is_verified});
