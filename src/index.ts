@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: ["https://brainopfrontend.vercel.app", "http://localhost:3000"],
+  origin: ["https://monitordevices.vercel.app", "http://localhost:3000"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
