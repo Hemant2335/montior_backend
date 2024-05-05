@@ -38,10 +38,10 @@ wss.on('connection', function connection(ws) {
     switch(data.type){
       case "Add" :
         wss.clients.forEach(function each(client) {
-          if (client.readyState === WebSocket.OPEN) {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(data));
           }
-        });
+        });        
       case "Remove" : 
       wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
