@@ -49,8 +49,7 @@ router.get('/sessions', authentication ,async (req, res) => {
   const user = req.body.user;
   const sessions = await prisma.userSession.findMany({
     where: {
-      userId: user.id,
-      isActive: true,
+      userId: user.id
     },
   });
   res.json(sessions);
