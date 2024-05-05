@@ -28,6 +28,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ Status: false, error: "Invalid Password" });
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "secret");
+    console.log("device name" ,devicename);
     const session = await prisma.userSession.create({
       data : {
         userId : user.id,
