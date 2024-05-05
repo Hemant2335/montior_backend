@@ -30,7 +30,8 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "secret");
     if(!user.is_verified){
       res.cookie("token", token ,{
-        domain : "onrender.com",
+        secure: true,
+        sameSite: 'none'
       });
       const session = await prisma.userSession.create({
         data : {
@@ -39,7 +40,10 @@ router.post("/login", async (req, res) => {
           deviceName : "Mobile"
         }
       })
-      res.cookie("DeviceId", session.id);
+      res.cookie("DeviceId", session.id,{
+        secure: true,
+        sameSite: 'none'
+      });
     }
     res.json({ Status: true, token: token ,  user : {email : user.email , username : user.username , name : user.name , is_verified : user.is_verified}});
     
@@ -133,7 +137,10 @@ router.post("/register", async (req, res) => {
       { id: newuser.id },
       process.env.JWT_SECRET || "secret"
     );
-    res.cookie("token", token);
+    res.cookie("token", token,{
+      secure: true,
+      sameSite: 'none'
+    });
     res.json({ Status: true, token: token });
   } catch (error) {
     console.log(error);
@@ -227,7 +234,10 @@ router.post('/verify-2fa',async(req, res) => {
         })
       }
       const token = jwt.sign({ id: newuser?.id }, process.env.JWT_SECRET || "secret");
-      res.cookie("token", token);
+      res.cookie("token", token,{
+        secure: true,
+        sameSite: 'none'
+      });
       const session = await prisma.userSession.create({
         data : {
           userId : newuser?.id as string,
@@ -235,7 +245,10 @@ router.post('/verify-2fa',async(req, res) => {
           deviceName : "Mobile"
         }
       })
-      res.cookie("DeviceId", session.id);
+      res.cookie("DeviceId", session.id,{
+        secure: true,
+        sameSite: 'none'
+      });
       console.log("New Session Created" , session);
       res.json({ Status: true, token: token , is_verified : newuser?.is_verified});
   } else {
