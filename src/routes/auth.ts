@@ -29,7 +29,9 @@ router.post("/login", async (req, res) => {
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "secret");
     if(!user.is_verified){
-      res.cookie("token", token );
+      res.cookie("token", token ,{
+        domain : "onrender.com",
+      });
       const session = await prisma.userSession.create({
         data : {
           userId : user.id,
