@@ -6,9 +6,11 @@ import WebSocket, { WebSocketServer } from "ws";
 
 app.use(express.json());
 app.use(cookieParser());
+app.use()
 app.use(cors({
   credentials: true,
-  origin: ["https://brainopfrontend.vercel.app", "http://localhost:3000"]
+  origin: ["https://brainopfrontend.vercel.app", "http://localhost:3000"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 app.get('/', (req, res) => {
