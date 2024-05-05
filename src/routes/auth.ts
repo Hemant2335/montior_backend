@@ -37,7 +37,7 @@ router.post("/login", async (req, res) => {
         Browser : browsername
       }
     })
-    res.json({ Status: true, DeviceId : session.id ,token: token ,  user : {email : user.email , username : user.username , name : user.name , is_verified : user.is_verified}});
+    res.json({ Status: true, DeviceId : session.id ,token: token ,  user : {id : user.id , email : user.email , username : user.username , name : user.name , is_verified : user.is_verified}});
     
   } catch (error) {
     console.log(error);
@@ -143,7 +143,7 @@ router.get("/me", authentication, async (req, res) => {
       id : user.id
     }
   })
-  res.json({ user : {email : newuser?.email , username : newuser?.username , name : newuser?.name , is_verified : newuser?.is_verified}});
+  res.json({ user : {id : user.id , email : newuser?.email , username : newuser?.username , name : newuser?.name , is_verified : newuser?.is_verified}});
 });
 
 
