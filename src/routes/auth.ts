@@ -13,7 +13,7 @@ require("dotenv").config();
 
 
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password , browsername , devicename } = req.body;
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -32,7 +32,8 @@ router.post("/login", async (req, res) => {
       data : {
         userId : user.id,
         isActive : true,
-        deviceName : "Mobile"
+        deviceName : devicename,
+        Browser : browsername
       }
     })
     res.json({ Status: true, DeviceId : session.id ,token: token ,  user : {email : user.email , username : user.username , name : user.name , is_verified : user.is_verified}});

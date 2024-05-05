@@ -33,5 +33,6 @@ model UserSession {
   deviceName String
   isActive   Boolean @default(true)
   timestamp  DateTime @default(now())
+  Browser    String @default("")
 }
 
