@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: ["https://monitordevices.vercel.app", "http://localhost:3000", "https://monitordevices.onrender.com/"],
+  origin: ["https://monitordevices.vercel.app", "http://localhost:3000", "https://monitordevices.onrender.com"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
