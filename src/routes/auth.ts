@@ -28,24 +28,14 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ Status: false, error: "Invalid Password" });
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "secret");
-    if(!user.is_verified){
-      res.cookie("token", token ,{
-        secure: true,
-        sameSite: 'none'
-      });
-      const session = await prisma.userSession.create({
-        data : {
-          userId : user.id,
-          isActive : true,
-          deviceName : "Mobile"
-        }
-      })
-      res.cookie("DeviceId", session.id,{
-        secure: true,
-        sameSite: 'none'
-      });
-    }
-    res.json({ Status: true, token: token ,  user : {email : user.email , username : user.username , name : user.name , is_verified : user.is_verified}});
+    const session = await prisma.userSession.create({
+      data : {
+        userId : user.id,
+        isActive : true,
+        deviceName : "Mobile"
+      }
+    })
+    res.json({ Status: true, DeviceId : session.id ,token: token ,  user : {email : user.email , username : user.username , name : user.name , is_verified : user.is_verified}});
     
   } catch (error) {
     console.log(error);
@@ -137,10 +127,6 @@ router.post("/register", async (req, res) => {
       { id: newuser.id },
       process.env.JWT_SECRET || "secret"
     );
-    res.cookie("token", token,{
-      secure: true,
-      sameSite: 'none'
-    });
     res.json({ Status: true, token: token });
   } catch (error) {
     console.log(error);
@@ -234,10 +220,6 @@ router.post('/verify-2fa',async(req, res) => {
         })
       }
       const token = jwt.sign({ id: newuser?.id }, process.env.JWT_SECRET || "secret");
-      res.cookie("token", token,{
-        secure: true,
-        sameSite: 'none'
-      });
       const session = await prisma.userSession.create({
         data : {
           userId : newuser?.id as string,
@@ -245,12 +227,8 @@ router.post('/verify-2fa',async(req, res) => {
           deviceName : "Mobile"
         }
       })
-      res.cookie("DeviceId", session.id,{
-        secure: true,
-        sameSite: 'none'
-      });
       console.log("New Session Created" , session);
-      res.json({ Status: true, token: token , is_verified : newuser?.is_verified});
+      res.json({ Status: true, DeviceId : session.id ,token: token , is_verified : newuser?.is_verified});
   } else {
     console.log("Invalid Token");
     res.json({ Status: false, is_verified : newuser?.is_verified});
@@ -258,14 +236,14 @@ router.post('/verify-2fa',async(req, res) => {
 });
 
 router.get("/check-session" ,async (req, res) => {
-  const DeviceId = req.cookies.DeviceId;
+  const DeviceId = req.headers.DeviceId;
   console.log(DeviceId);
   if(!DeviceId){
     return res.status(400).json({Status : false , error : "No Session Provided"});
   }
   const session = await prisma.userSession.findFirst({
     where : {
-      id : DeviceId
+      id : DeviceId as string
     }
   })
   console.log(session);
