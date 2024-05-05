@@ -235,8 +235,8 @@ router.post('/verify-2fa',async(req, res) => {
   }
 });
 
-router.get("/check-session" ,async (req, res) => {
-  const DeviceId = req.headers.DeviceId;
+router.post("/check-session" ,async (req, res) => {
+  const DeviceId = req.body.DeviceId;
   console.log(DeviceId);
   if(!DeviceId){
     return res.status(400).json({Status : false , error : "No Session Provided"});
